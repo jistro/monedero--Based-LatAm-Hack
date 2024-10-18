@@ -1,0 +1,3 @@
+[submodule "monedero--contracts/lib/forge-std"]
+	path = monedero--contracts/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
