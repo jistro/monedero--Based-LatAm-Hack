@@ -20,18 +20,16 @@ $$\  \$$ |$$ | $$ | $$ |\$$$$$$  |\$$$$$$  |$$$$$$$  |\$$$$$$  |
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract mUSDC is ERC20 {
-    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-    //Error Handling
-    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    //variables
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     error Unauthorized();
     error NotEnoughBalance();
     /**
-     * @dev Permite almacenar la información de los roles 
-     *      dentro del contrato.
-     * @param actual Dirección del rol actual.
-     * @param proposed Dirección del rol propuesto.
-     * @param timeToClaim Tiempo en el que se puede reclamar 
-     *                      el rol propuesto.
+     * @dev Allows storing role information within the contract.
+     * @param actual Address of the current role.
+     * @param proposed Address of the proposed role.
+     * @param timeToClaim Time when the proposed role can be claimed.
      */
     struct RoleTypeData {
         address actual;
@@ -39,10 +37,9 @@ contract mUSDC is ERC20 {
         uint256 timeToClaim;
     }
     /**
-     * @dev Permite almacenar la información de los usuarios para
-     *      el cálculo de rendimientos.
-     * @param lastUpdateTimestamp Última vez que se actualizó el rendimiento.
-     * @param lastAPY Rendimiento del usuario.
+     * @dev Stores user information for yield calculation.
+     * @param lastUpdateTimestamp Last time the yield was updated.
+     * @param lastAPY User's yield.
      */
     struct UserData {
         uint256 lastUpdateTimestamp;
@@ -53,14 +50,9 @@ contract mUSDC is ERC20 {
     RoleTypeData private administrator;
     mapping(address => UserData) private userData;
 
-    constructor(
-        address _stakingContract,
-        address _administrator
-    ) ERC20("Monedero USDC", "mUSDC") {
-        stakingContract.actual = _stakingContract;
-        administrator.actual = _administrator;
-    }
-
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    //Modifiers
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     modifier onlyStakingContract() {
         if (msg.sender != stakingContract.actual) {
             revert Unauthorized();
@@ -75,6 +67,24 @@ contract mUSDC is ERC20 {
         _;
     }
 
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    //Constructor
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    constructor(
+        address _stakingContract,
+        address _administrator
+    ) ERC20("Monedero USDC", "mUSDC") {
+        stakingContract.actual = _stakingContract;
+        administrator.actual = _administrator;
+    }
+
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    //External functions
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    
+    //•••••••••••••••••••••••••••••••••
+    //ERC20 functions
+    //•••••••••••••••••••••••••••••••••
     function mint(
         address to,
         uint256 amount,
@@ -119,35 +129,9 @@ contract mUSDC is ERC20 {
         return true;
     }
 
-    function _hookUpdateYield(address _user) internal {
-        // Verificar si la dirección tiene saldo
-        uint256 balance = balanceOf(_user);
-        if (balance == 0) {
-            return;
-        }
-        // Calcular el tiempo transcurrido desde la última actualización
-        uint256 timeElapsed = block.timestamp -
-            userData[_user].lastUpdateTimestamp;
-
-        // Calcular el rendimiento
-        uint256 yield = (balance * userData[_user].lastAPY * timeElapsed) /
-            (365 days * 10000);
-
-        // Mintear el rendimiento calculado
-        if (yield > 0) {
-            _mint(_user, yield);
-        }
-    }
-
-    function _hookTransferYieldUpdate(address _from, address _to) internal {
-        _hookUpdateYield(_from);
-        _hookUpdateYield(_to);
-    }
-
-    function decimals() public pure override returns (uint8) {
-        return 6;
-    }
-
+    //•••••••••••••••••••••••••••••••••
+    //Administrative functions
+    //•••••••••••••••••••••••••••••••••
     function proposeNewStakingContractAddress(
         address _newAddress
     ) external onlyAdministrator {
@@ -195,6 +179,76 @@ contract mUSDC is ERC20 {
         }
     }
 
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    //Public functions
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    function decimals() public pure override returns (uint8) {
+        return 6;
+    }
+
+    function getUserData(address _user)
+        external
+        view
+        returns (UserData memory)
+    {
+        return userData[_user];
+    }
+
+    function getStakingContractAddress() external view returns (address) {
+        return stakingContract.actual;
+    }
+
+    function getAdministratorAddress() external view returns (address) {
+        return administrator.actual;
+    }
+
+    function getRoleProposedAdministrator() external view returns (address) {
+        return administrator.proposed;
+    }
+
+    function getRoleProposedStakingContract() external view returns (address) {
+        return stakingContract.proposed;
+    }
+
+    function getRoleProposedTimeToClaimAdministrator() external view returns (uint256) {
+        return administrator.timeToClaim;
+    }
+
+    function getRoleProposedTimeToClaimStakingContract() external view returns (uint256) {
+        return stakingContract.timeToClaim;
+    }
+
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    //Internal functions
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    function _hookUpdateYield(address _user) internal {
+        // Verificar si la dirección tiene saldo
+        uint256 balance = balanceOf(_user);
+        if (balance == 0) {
+            return;
+        }
+        // Calcular el tiempo transcurrido desde la última actualización
+        uint256 timeElapsed = block.timestamp -
+            userData[_user].lastUpdateTimestamp;
+
+        // Calcular el rendimiento
+        uint256 yield = (balance * userData[_user].lastAPY * timeElapsed) /
+            (365 days * 10000);
+
+        // Mintear el rendimiento calculado
+        if (yield > 0) {
+            _mint(_user, yield);
+        }
+    }
+
+    function _hookTransferYieldUpdate(address _from, address _to) internal {
+        _hookUpdateYield(_from);
+        _hookUpdateYield(_to);
+    }
+
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    //ERC20 functions not implemented (overrides)
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     function approve(address spender, uint256 value) public override returns (bool) {
         return false;
     }
@@ -202,4 +256,5 @@ contract mUSDC is ERC20 {
     function transferFrom(address from, address to, uint256 value) public override returns (bool) {
         return false;
     }
+
 }
