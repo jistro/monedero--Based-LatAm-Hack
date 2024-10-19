@@ -1,0 +1,68 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+}
+
+.cardData {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardData h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.cardData p {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 400;
+}
+
+.cardData__containerTokenInfo {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardData__containerTokenInfo input {
+  width: 100%;
+  height: 2.5rem;
+  background-color: transparent;
+  border: none;
+  font-size: 2.5rem;
+  outline: none;
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+}
+
+.cardData__containerTokenInfo input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.cardData__containerTokenInfo input::-webkit-outer-spin-button,
+.cardData__containerTokenInfo input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.selectData {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectData p {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.selectData img {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
+}
