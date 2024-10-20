@@ -7,3 +7,5 @@
 [submodule "monedero--contracts/lib/aave-v3-origin"]
 	path = monedero--contracts/lib/aave-v3-origin
 	url = https://github.com/aave-dao/aave-v3-origin
+[submodule "lib/aave-v3-origin"]
+	branch = main
