@@ -48,7 +48,11 @@ contract mUSDC is ERC20 {
 
     RoleTypeData private stakingContract;
     RoleTypeData private administrator;
+    RoleTypeData public mUSDCAddress;
+    RoleTypeData public masterWallet; 
+    RoleTypeData public manualAPY;
     mapping(address => UserData) private userData;
+    address[] public whitelistedAddresses;
 
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     //Modifiers
@@ -85,6 +89,14 @@ contract mUSDC is ERC20 {
     //•••••••••••••••••••••••••••••••••
     //ERC20 functions
     //•••••••••••••••••••••••••••••••••
+    /**
+     * @dev This function allows Staking.sol to mint mUSDC tokens
+     *      and at the same time update the user's yield (if has
+     *     any balance).
+     * @param to the address to mint the tokens
+     * @param amount the amount of tokens to mint
+     * @param newAPY the new APY for the user
+     */
     function mint(
         address to,
         uint256 amount,
@@ -100,6 +112,14 @@ contract mUSDC is ERC20 {
         });
     }
 
+    /**
+     * @dev This function allows Staking.sol to burn mUSDC tokens
+     *      and at the same time update the user's yield (if has
+     *     any balance).
+     * @param from the address to burn the tokens
+     * @param amount the amount of tokens to burn
+     * @param newAPY the new APY for the user
+     */
     function burn(
         address from,
         uint256 amount,
@@ -119,6 +139,13 @@ contract mUSDC is ERC20 {
         }
     }
 
+    /**
+     * @dev This function allows users to transfer mUSDC tokens
+     *      and at the same time update the yield for both
+     *      the sender and the receiver.
+     * @param to the address to transfer the tokens
+     * @param value the amount of tokens to transfer
+     */
     function transfer(
         address to,
         uint256 value
@@ -130,8 +157,26 @@ contract mUSDC is ERC20 {
     }
 
     //•••••••••••••••••••••••••••••••••
-    //Administrative functions
+    //Admin functions
     //•••••••••••••••••••••••••••••••••
+
+    /**
+     * @dev the next functions allow the administrator to
+     *      propose a change in some important variables
+     *      of the contract.
+     * 
+     *      The process is as follows:
+     *      a) The administrator proposes a change and executes
+     *          1. The administrator proposes a change.
+     *          2. The administrator waits for a day.
+     *          3. The administrator claims the change.
+     * 
+     *      b) The administrator proposes a change and cancels
+     *          1. The administrator proposes a change.
+     *          2. The administrator cancels the change.
+     */
+
+
     function proposeNewStakingContractAddress(
         address _newAddress
     ) external onlyAdministrator {
@@ -179,12 +224,9 @@ contract mUSDC is ERC20 {
         }
     }
 
-    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-    //Public functions
-    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-    function decimals() public pure override returns (uint8) {
-        return 6;
-    }
+    //•••••••••••••••••••••••••••••••••
+    //Getters
+    //•••••••••••••••••••••••••••••••••
 
     function getUserData(address _user)
         external
@@ -219,6 +261,13 @@ contract mUSDC is ERC20 {
     }
 
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    //Public functions
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+    function decimals() public pure override returns (uint8) {
+        return 6;
+    }
+
+    //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     //Internal functions
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     function _hookUpdateYield(address _user) internal {
@@ -233,7 +282,7 @@ contract mUSDC is ERC20 {
 
         // Calcular el rendimiento
         uint256 yield = (balance * userData[_user].lastAPY * timeElapsed) /
-            (365 days * 10000);
+            (365 days * 1000000);  // Cambia 10000 por 1000000
 
         // Mintear el rendimiento calculado
         if (yield > 0) {
