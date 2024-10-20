@@ -1,5 +1,6 @@
 .container {
   padding: 0 2rem;
+  background-color: var(--BackgroundPrimary);
 }
 
 .main {
@@ -8,7 +9,45 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  
 }
+
+.dataWallet {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+  padding: 2rem 0;
+  gap: 1rem;
+
+}
+
+.dataWallet h1 {
+  font-size: 1rem;
+  margin-right: 1rem;
+  color: #eaeaea;
+}
+
+.dataWallet_container {
+  height: 2.5rem;
+  font-size: 1rem;
+}
+
+.dataWallet_container h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #eaeaea;
+}
+
+.dataWallet_container p {
+  margin: 0;
+  font-size: 1rem;
+  color: #eaeaea;
+}
+
+
+
 
 .footer {
   display: flex;

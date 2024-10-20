@@ -1,12 +1,17 @@
+.cardBackgroundStyle{
+  background-color: var(--BackgroundSecondary);
+}
 .cardContainer {
   display: flex;
   flex-direction: column;
   align-content: flex-start;
+  
 }
 
 .cardData {
   display: flex;
   flex-direction: column;
+
 }
 
 .cardData h3 {

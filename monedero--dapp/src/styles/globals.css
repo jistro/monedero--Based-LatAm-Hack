@@ -1,3 +1,11 @@
+/*importar variables de colores*/
+:root {
+  
+  --BackgroundPrimary: #1f1f1f;
+  --BackgroundSecondary: #343434;
+
+}
+
 html,
 body {
   padding: 0;
@@ -14,3 +22,5 @@ a {
 * {
   box-sizing: border-box;
 }
+
+

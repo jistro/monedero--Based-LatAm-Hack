@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiProvider config={config}>
       <QueryClientProvider client={client}>
         <RainbowKitProvider>
-          <Theme>
+        <Theme accentColor="gray">
             <Component {...pageProps} />
           </Theme>
         </RainbowKitProvider>

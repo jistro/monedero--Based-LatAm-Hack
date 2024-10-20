@@ -6,7 +6,7 @@ import { config } from "../wagmi";
 import { erc20Abi } from "viem";
 import Staking from "../../abis/Staking.json";
 
-export const Withdraw = () => {
+export const Withdraw24Hours = () => {
   const StakingAddress: `0x${string}` =
     "0xDBb750B077Fd6303060c92B330A01e63DDAd8e5c";
   const USDCAddress: `0x${string}` =
@@ -27,7 +27,7 @@ export const Withdraw = () => {
     writeContract(config, {
       abi: Staking.abi,
       address: StakingAddress,
-      functionName: "unstakingNowUSDC",
+      functionName: "unstaking24HoursUSDC",
       args: [amountToDepositWei],
     })
       .then(() => {
