@@ -47,18 +47,23 @@ contract mUSDC is ERC20 {
     }
 
     RoleTypeData private stakingContract;
+    RoleTypeData private triggeredSwaps;
     RoleTypeData private administrator;
-    RoleTypeData public mUSDCAddress;
-    RoleTypeData public masterWallet; 
-    RoleTypeData public manualAPY;
+    RoleTypeData private mUSDCAddress;
+    RoleTypeData private masterWallet;
+    RoleTypeData private manualAPY;
+
     mapping(address => UserData) private userData;
     address[] public whitelistedAddresses;
 
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     //Modifiers
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-    modifier onlyStakingContract() {
-        if (msg.sender != stakingContract.actual) {
+    modifier onlyStakingOrTriggeredSwapsContract() {
+        if (
+            msg.sender != stakingContract.actual ||
+            msg.sender != triggeredSwaps.actual
+        ) {
             revert Unauthorized();
         }
         _;
@@ -76,16 +81,18 @@ contract mUSDC is ERC20 {
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     constructor(
         address _stakingContract,
-        address _administrator
+        address _administrator,
+        address _triggerSwaps
     ) ERC20("Monedero USDC", "mUSDC") {
         stakingContract.actual = _stakingContract;
         administrator.actual = _administrator;
+        triggeredSwaps.actual = _triggerSwaps;
     }
 
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     //External functions
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-    
+
     //•••••••••••••••••••••••••••••••••
     //ERC20 functions
     //•••••••••••••••••••••••••••••••••
@@ -101,7 +108,7 @@ contract mUSDC is ERC20 {
         address to,
         uint256 amount,
         uint256 newAPY
-    ) external onlyStakingContract {
+    ) external onlyStakingOrTriggeredSwapsContract {
         _hookUpdateYield(to);
 
         _mint(to, amount);
@@ -124,7 +131,7 @@ contract mUSDC is ERC20 {
         address from,
         uint256 amount,
         uint256 newAPY
-    ) external onlyStakingContract {
+    ) external onlyStakingOrTriggeredSwapsContract {
         _hookUpdateYield(from);
 
         _burn(from, amount);
@@ -164,18 +171,17 @@ contract mUSDC is ERC20 {
      * @dev the next functions allow the administrator to
      *      propose a change in some important variables
      *      of the contract.
-     * 
+     *
      *      The process is as follows:
      *      a) The administrator proposes a change and executes
      *          1. The administrator proposes a change.
      *          2. The administrator waits for a day.
      *          3. The administrator claims the change.
-     * 
+     *
      *      b) The administrator proposes a change and cancels
      *          1. The administrator proposes a change.
      *          2. The administrator cancels the change.
      */
-
 
     function proposeNewStakingContractAddress(
         address _newAddress
@@ -224,15 +230,38 @@ contract mUSDC is ERC20 {
         }
     }
 
+    function proposeNewTriggeredSwapsAddress(
+        address _newAddress
+    ) external onlyAdministrator {
+        triggeredSwaps.proposed = _newAddress;
+        triggeredSwaps.timeToClaim = block.timestamp + 1 days;
+    }
+
+    function cancelNewTriggeredSwapsAddress() external onlyAdministrator {
+        triggeredSwaps.proposed = address(0);
+        triggeredSwaps.timeToClaim = 0;
+    }
+
+    function claimNewTriggeredSwapsAddress() external {
+        if (
+            block.timestamp > triggeredSwaps.timeToClaim &&
+            msg.sender == triggeredSwaps.proposed
+        ) {
+            triggeredSwaps = RoleTypeData({
+                actual: triggeredSwaps.proposed,
+                proposed: address(0),
+                timeToClaim: 0
+            });
+        }
+    }
+
     //•••••••••••••••••••••••••••••••••
     //Getters
     //•••••••••••••••••••••••••••••••••
 
-    function getUserData(address _user)
-        external
-        view
-        returns (UserData memory)
-    {
+    function getUserData(
+        address _user
+    ) external view returns (UserData memory) {
         return userData[_user];
     }
 
@@ -252,11 +281,19 @@ contract mUSDC is ERC20 {
         return stakingContract.proposed;
     }
 
-    function getRoleProposedTimeToClaimAdministrator() external view returns (uint256) {
+    function getRoleProposedTimeToClaimAdministrator()
+        external
+        view
+        returns (uint256)
+    {
         return administrator.timeToClaim;
     }
 
-    function getRoleProposedTimeToClaimStakingContract() external view returns (uint256) {
+    function getRoleProposedTimeToClaimStakingContract()
+        external
+        view
+        returns (uint256)
+    {
         return stakingContract.timeToClaim;
     }
 
@@ -282,7 +319,7 @@ contract mUSDC is ERC20 {
 
         // Calcular el rendimiento
         uint256 yield = (balance * userData[_user].lastAPY * timeElapsed) /
-            (365 days * 1000000);  // Cambia 10000 por 1000000
+            (365 days * 1000000); // Cambia 10000 por 1000000
 
         // Mintear el rendimiento calculado
         if (yield > 0) {
@@ -298,12 +335,18 @@ contract mUSDC is ERC20 {
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     //ERC20 functions not implemented (overrides)
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-    function approve(address spender, uint256 value) public override returns (bool) {
+    function approve(
+        address spender,
+        uint256 value
+    ) public override returns (bool) {
         return false;
     }
 
-    function transferFrom(address from, address to, uint256 value) public override returns (bool) {
+    function transferFrom(
+        address from,
+        address to,
+        uint256 value
+    ) public override returns (bool) {
         return false;
     }
-
 }

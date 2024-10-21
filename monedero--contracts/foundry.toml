@@ -5,6 +5,8 @@ libs = ["lib"]
 remappings = [
     '@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts',
     '@aave-dao/aave-v3-origin/contracts/=lib/aave-v3-origin/src/contracts',
+    '@uniswap/v3-periphery/contracts/=lib/v3-periphery/contracts',
     '@monedero/contracts/=src/',
+    '@uniswap/v3-core/contracts/=lib/v3-core/contracts',
 ]
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

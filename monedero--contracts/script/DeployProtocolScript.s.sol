@@ -12,6 +12,7 @@ contract DeployProtocolScript is Script {
     uint256 apy = 250; // 2.5%
     address aavePool = 0x6Ae43d3271ff6888e7Fc43Fd7321a503ff738951;
     address USDCAddress = 0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8;
+    address swapRouterAddress = 0xE592427A0AEce92De3Edee1F18E0157C05861564;
 
     function setUp() public {}
 
@@ -22,7 +23,8 @@ contract DeployProtocolScript is Script {
             masterWallet,
             apy,
             aavePool,
-            USDCAddress
+            USDCAddress,
+            swapRouterAddress
         );
 
         vm.stopBroadcast();

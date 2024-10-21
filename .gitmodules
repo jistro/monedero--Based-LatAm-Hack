@@ -9,3 +9,9 @@
 	url = https://github.com/aave-dao/aave-v3-origin
 [submodule "lib/aave-v3-origin"]
 	branch = main
+[submodule "monedero--contracts/lib/v3-periphery"]
+	path = monedero--contracts/lib/v3-periphery
+	url = https://github.com/Uniswap/v3-periphery
+[submodule "monedero--contracts/lib/v3-core"]
+	path = monedero--contracts/lib/v3-core
+	url = https://github.com/Uniswap/v3-core
