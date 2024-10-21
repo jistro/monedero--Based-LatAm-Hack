@@ -6,7 +6,7 @@ import { Tabs } from "@radix-ui/themes";
 import { Deposits } from "../components/Deposits";
 import { Withdraw } from "../components/Withdraw";
 import { Withdraw24Hours } from "../components/Withdraw24Hours";
-//import {getName } from "@coinbase/onchainkit/identity";
+import { getName } from "@coinbase/onchainkit/identity";
 import { base } from "viem/chains";
 import { getAccount, readContract } from "@wagmi/core";
 import { config } from "../wagmi";
@@ -52,22 +52,24 @@ const Home: NextPage = () => {
 
   const getNameAndnUSDC = async () => {
     const address = getAccount(config).address;
-    //const name = await getName({ address, chain: base });
+    const name = await getName({ address, chain: base });
     console.log(name);
     await readContract(config, {
       abi: erc20Abi,
       address: mUSDAddress,
       functionName: "balanceOf",
       args: [address as `0x${string}`],
-    }).then((rawBalance: any) => {
-      console.log(rawBalance);
-      setNUSDC_amount((Number(rawBalance) / 1e6).toString()); // Assuming the token has 6 decimal places
-    }).catch((error) => {
-      setNUSDC_amount("0");
-    //setName(name ? name : "");
-    console.log(nUSDC_amount);
-    });
-    
+    })
+      .then((rawBalance: any) => {
+        console.log(rawBalance);
+        setNUSDC_amount((Number(rawBalance) / 1e6).toString()); // Assuming the token has 6 decimal places
+        setName(name ? name : "");
+      })
+      .catch((error) => {
+        setNUSDC_amount("0");
+        setName(name ? name : "");
+        console.log(nUSDC_amount);
+      });
   };
 
   return (
@@ -90,15 +92,15 @@ const Home: NextPage = () => {
               chainStatus="icon"
             />
           </div>
-          
-            {isConnected ? (
-              <div className={styles.dataWallet_container}>
-                <h3>{name}</h3>
-                <p>${nUSDC_amount}</p>
-              </div>
-            ) : (
-              "Conéctate a tu wallet"
-            )}
+
+          {isConnected ? (
+            <div className={styles.dataWallet_container}>
+              <h3>{name}</h3>
+              <p>${nUSDC_amount}</p>
+            </div>
+          ) : (
+            "Conéctate a tu wallet"
+          )}
         </div>
 
         <Tabs.Root defaultValue="tab1" orientation="vertical">
@@ -154,8 +156,6 @@ const Home: NextPage = () => {
           </Tabs.Content>
         </Tabs.Root>
       </main>
-
-      
     </div>
   );
 };
