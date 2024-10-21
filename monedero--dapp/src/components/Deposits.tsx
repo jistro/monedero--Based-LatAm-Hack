@@ -30,11 +30,11 @@ export const Deposits = () => {
   };
 
   const StakingAddress: `0x${string}` =
-    "0xDBb750B077Fd6303060c92B330A01e63DDAd8e5c";
+    "0x8155bFe2bdcDD09bD565D31067646CA3790Bb77a";
   const USDCAddress: `0x${string}` =
     "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8";
   const mUSDAddress: `0x${string}` =
-    "0xCE5Ab14A50b661B8679BF4c55d3397d52F7A9bB4";
+    "0x1932d99C5115a283D9f0919C9e6FE56b2060063B";
 
   const [value, setValue] = useState<string>("USDC");
 

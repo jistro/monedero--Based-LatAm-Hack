@@ -6,7 +6,7 @@ import { Tabs } from "@radix-ui/themes";
 import { Deposits } from "../components/Deposits";
 import { Withdraw } from "../components/Withdraw";
 import { Withdraw24Hours } from "../components/Withdraw24Hours";
-import { Avatar, Name, getName } from "@coinbase/onchainkit/identity";
+//import {getName } from "@coinbase/onchainkit/identity";
 import { base } from "viem/chains";
 import { getAccount, readContract } from "@wagmi/core";
 import { config } from "../wagmi";
@@ -14,8 +14,12 @@ import { useEffect, useState } from "react";
 import { erc20Abi } from "viem";
 
 const Home: NextPage = () => {
+  const StakingAddress: `0x${string}` =
+    "0x8155bFe2bdcDD09bD565D31067646CA3790Bb77a";
+  const USDCAddress: `0x${string}` =
+    "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8";
   const mUSDAddress: `0x${string}` =
-    "0xCE5Ab14A50b661B8679BF4c55d3397d52F7A9bB4";
+    "0x1932d99C5115a283D9f0919C9e6FE56b2060063B";
   // checa si hay una wallet conectada usando getAccount(config).address
   const [isConnected, setIsConnected] = useState(false);
   const [name, setName] = useState("");
@@ -47,17 +51,22 @@ const Home: NextPage = () => {
 
   const getNameAndnUSDC = async () => {
     const address = getAccount(config).address;
-    const name = await getName({ address, chain: base });
+    //const name = await getName({ address, chain: base });
     console.log(name);
-    const rawBalance = await readContract(config, {
+    await readContract(config, {
       abi: erc20Abi,
       address: mUSDAddress,
       functionName: "balanceOf",
       args: [address as `0x${string}`],
-    });
-    setNUSDC_amount((Number(rawBalance) / 1e6).toString()); // Assuming the token has 6 decimal places
-    setName(name ? name : "");
+    }).then((rawBalance: any) => {
+      console.log(rawBalance);
+      setNUSDC_amount((Number(rawBalance) / 1e6).toString()); // Assuming the token has 6 decimal places
+    }).catch((error) => {
+      setNUSDC_amount("0");
+    //setName(name ? name : "");
     console.log(nUSDC_amount);
+    });
+    
   };
 
   return (
@@ -83,7 +92,7 @@ const Home: NextPage = () => {
           
             {isConnected ? (
               <div className={styles.dataWallet_container}>
-                <h3>{name}dasd</h3>
+                <h3>{name}</h3>
                 <p>${nUSDC_amount}</p>
               </div>
             ) : (
