@@ -52,7 +52,9 @@ const Home: NextPage = () => {
 
   const getNameAndnUSDC = async () => {
     const address = getAccount(config).address;
-    const name = await getName({ address, chain: base });
+    if (address) {
+      const name = await getName({ address });
+    }
     console.log(name);
     await readContract(config, {
       abi: erc20Abi,
