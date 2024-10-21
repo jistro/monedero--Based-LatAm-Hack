@@ -27,6 +27,7 @@ contract Staking is ReentrancyGuard {
     error NotEnoughAllowance();
     error NotEnoughBalance();
     error TransferFailed();
+    error ApproveFailed();
 
     /**
      * @dev Allows storing address with time to claim.
@@ -114,8 +115,12 @@ contract Staking is ReentrancyGuard {
             _USDCAddress
         );
         //se infinite allowance a aavePool and triggerSwaps
-        IERC20(_USDCAddress).approve(_aavePool, type(uint256).max);
-        IERC20(_USDCAddress).approve(triggerSwaps.actual, type(uint256).max);
+        if (!IERC20(_USDCAddress).approve(_aavePool, type(uint256).max)){
+            revert ApproveFailed();
+        }
+        if(!IERC20(_USDCAddress).approve(triggerSwaps.actual, type(uint256).max)){
+            revert ApproveFailed();
+        }
         masterWallet.actual = _masterWallet;
         apy.actual = _apy;
         aavePool.actual = _aavePool;
