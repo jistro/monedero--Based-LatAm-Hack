@@ -4,7 +4,7 @@ import { useState } from "react";
 import { readContract, writeContract, getAccount } from "@wagmi/core";
 import { config } from "../wagmi";
 import { erc20Abi } from "viem";
-import Staking from "../../abis/Staking.json";
+import mUSDC from "../../abis/mUSDC.json";
 
 export const Transfer = () => {
   const StakingAddress: `0x${string}` =
@@ -18,23 +18,29 @@ export const Transfer = () => {
 
   const [amountUSD, setAmountUSD] = useState<number>(0);
 
-  const transfer = async () => {
+  const transferToken = async () => {
+    console.log("transferToken");
     const amountToDeposit = (
-      document.getElementById("amountToDeposit") as HTMLInputElement
+      document.getElementById("amountToTransfer") as HTMLInputElement
     ).value;
     const amountToDepositWei = BigInt(Number(amountToDeposit) * 10 ** 6);
+
+    const accountTo = document.getElementById("address") as HTMLInputElement;
+    console.log(accountTo.value);
+    console.log(amountToDepositWei);
     setFlagTypeAction("wait");
     writeContract(config, {
-      abi: Staking.abi,
+      abi: mUSDC.abi,
       address: mUSDAddress,
       functionName: "transfer",
-      args: [USDCAddress, amountToDepositWei],
+      args: [accountTo.value as `0x${string}`, amountToDepositWei],
     })
       .then(() => {
         setFlagTypeAction("nothing");
       })
       .catch(() => {
         setFlagTypeAction("nothing");
+        console.log("error");
       });
   };
 
@@ -52,7 +58,7 @@ export const Transfer = () => {
                     <input
                       type="number"
                       placeholder="0"
-                      id="amountToDeposit"
+                      id="amountToTransfer"
                       onChange={(e) => setAmountUSD(Number(e.target.value))}
                     />
                   </div>
@@ -64,10 +70,11 @@ export const Transfer = () => {
                 <div className={styles.cardData}>
                   <h3>Direccion: </h3>
                   <div className={styles.cardData__containerTokenInfo}>
-                    <input type="text" placeholder="0x" id="address" />
+                    <input type="text" placeholder="0x" id="address" 
+                      style={{ fontSize: "2rem"}}
+                    />
                     <div className={styles.selectData}>
-                      <img src="./usdc.png" alt="token" />
-                      <p>USDC</p>
+                      
                     </div>
                   </div>
                 </div>
@@ -78,7 +85,7 @@ export const Transfer = () => {
                 color="indigo"
                 variant="solid"
                 size="4"
-                onClick={transfer}
+                onClick={transferToken}
               >
                 Transferir
               </Button>
