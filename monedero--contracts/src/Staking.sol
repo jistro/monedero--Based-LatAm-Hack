@@ -26,6 +26,7 @@ contract Staking is ReentrancyGuard {
     error Unauthorized();
     error NotEnoughAllowance();
     error NotEnoughBalance();
+    error TransferFailed();
 
     /**
      * @dev Allows storing address with time to claim.
@@ -146,7 +147,7 @@ contract Staking is ReentrancyGuard {
                 _amount
             )
         ) {
-            revert Unauthorized();
+            revert TransferFailed();
         }
 
         Pool(aavePool.actual).supply(
@@ -181,7 +182,9 @@ contract Staking is ReentrancyGuard {
             address(this)
         );
 
-        IERC20(USDCAddress.actual).transfer(msg.sender, _amount);
+        if(!IERC20(USDCAddress.actual).transfer(msg.sender, _amount)){
+            revert TransferFailed();
+        }
 
         return true;
     }
@@ -235,7 +238,9 @@ contract Staking is ReentrancyGuard {
                 address(this)
             );
 
-            IERC20(USDCAddress.actual).transfer(user, amount);
+            if (!IERC20(USDCAddress.actual).transfer(user, amount)) {
+                revert TransferFailed();
+            }
 
             delete pendingUnstaking24Hours[user];
         }
@@ -257,7 +262,9 @@ contract Staking is ReentrancyGuard {
             _amount,
             address(this)
         );
-        IERC20(USDCAddress.actual).transfer(triggerSwaps.actual, _amount);
+        if(!IERC20(USDCAddress.actual).transfer(triggerSwaps.actual, _amount)){
+            revert TransferFailed();
+        }
     }
 
     //•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙

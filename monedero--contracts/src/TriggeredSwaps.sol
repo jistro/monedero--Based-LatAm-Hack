@@ -28,6 +28,7 @@ contract TriggeredSwaps is ReentrancyGuard {
     error OrderAlreadyCanceled();
     error AccessDenied();
     error NotTimeToClaimYet();
+    error TransferFailed();
 
     struct Order {
         address userAddress;
@@ -149,7 +150,9 @@ contract TriggeredSwaps is ReentrancyGuard {
 
         Staking(StakingAddress.actual).stakingUSDC(10000);
 
-        IERC20(mUSDCAddress.actual).transfer(masterWallet.actual, 10000);
+        if (!IERC20(mUSDCAddress.actual).transfer(masterWallet.actual, 10000)) {
+            revert TransferFailed();
+        }
 
         return orders.length - 1;
     }
@@ -437,10 +440,12 @@ contract TriggeredSwaps is ReentrancyGuard {
             orders[orderID].targetPrice
         );
 
-        IERC20(orders[orderID].tokenAddress_target).transfer(
+        if(!IERC20(orders[orderID].tokenAddress_target).transfer(
             orders[orderID].userAddress,
             amountIn
-        );
+        )) {
+            revert TransferFailed();
+        }
 
         orders[orderID].isActive = false;
     }

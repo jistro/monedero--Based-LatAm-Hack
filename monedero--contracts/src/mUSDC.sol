@@ -24,7 +24,6 @@ contract mUSDC is ERC20 {
     //variables
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     error Unauthorized();
-    error NotEnoughBalance();
     /**
      * @dev Allows storing role information within the contract.
      * @param actual Address of the current role.
