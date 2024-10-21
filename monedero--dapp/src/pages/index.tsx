@@ -12,6 +12,7 @@ import { getAccount, readContract } from "@wagmi/core";
 import { config } from "../wagmi";
 import { useEffect, useState } from "react";
 import { erc20Abi } from "viem";
+import { Transfer } from "../components/Transfer";
 
 const Home: NextPage = () => {
   const StakingAddress: `0x${string}` =
@@ -129,6 +130,15 @@ const Home: NextPage = () => {
                 Retiro esperado
               </h3>
             </Tabs.Trigger>
+            <Tabs.Trigger value="tab4">
+              <h3
+                style={{
+                  color: "white",
+                }}
+              >
+                Transferencia
+              </h3>
+            </Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content value="tab1">
             <Deposits />
@@ -138,6 +148,9 @@ const Home: NextPage = () => {
           </Tabs.Content>
           <Tabs.Content value="tab3">
             <Withdraw24Hours />
+          </Tabs.Content>
+          <Tabs.Content value="tab4">
+            <Transfer />
           </Tabs.Content>
         </Tabs.Root>
       </main>
