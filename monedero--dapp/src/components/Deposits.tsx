@@ -32,7 +32,7 @@ export const Deposits = () => {
   const StakingAddress: `0x${string}` =
     "0x8155bFe2bdcDD09bD565D31067646CA3790Bb77a";
   const USDCAddress: `0x${string}` =
-    "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8";
+    "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
   const mUSDAddress: `0x${string}` =
     "0x1932d99C5115a283D9f0919C9e6FE56b2060063B";
 
