@@ -108,19 +108,14 @@ contract Staking is ReentrancyGuard {
             new TriggeredSwaps(_masterWallet, address(this), _swapRouterAddress)
         );
         mUSDCAddress.actual = address(
-            new mUSDC(address(this), _masterWallet, triggerSwaps.actual)
+            new mUSDC(address(this), _masterWallet)
         );
         TriggeredSwaps(triggerSwaps.actual).constructorTokens(
             mUSDCAddress.actual,
             _USDCAddress
         );
         //se infinite allowance a aavePool and triggerSwaps
-        if (!IERC20(_USDCAddress).approve(_aavePool, type(uint256).max)){
-            revert ApproveFailed();
-        }
-        if(!IERC20(_USDCAddress).approve(triggerSwaps.actual, type(uint256).max)){
-            revert ApproveFailed();
-        }
+        
         masterWallet.actual = _masterWallet;
         apy.actual = _apy;
         aavePool.actual = _aavePool;
@@ -138,22 +133,14 @@ contract Staking is ReentrancyGuard {
      * @return bool Returns true if the operation was successful.
      */
     function stakingUSDC(uint256 _amount) external nonReentrant returns (bool) {
-        if (
-            IERC20(USDCAddress.actual).allowance(msg.sender, address(this)) <
-            _amount
-        ) {
-            revert NotEnoughAllowance();
-        }
         // staking logic
-        if (
-            !IERC20(USDCAddress.actual).transferFrom(
-                msg.sender,
-                address(this),
-                _amount
-            )
-        ) {
-            revert TransferFailed();
-        }
+        IERC20(USDCAddress.actual).transferFrom(
+            msg.sender,
+            address(this),
+            _amount
+        );
+
+        IERC20(USDCAddress.actual).approve(aavePool.actual, _amount);
 
         Pool(aavePool.actual).supply(
             USDCAddress.actual,
@@ -187,7 +174,7 @@ contract Staking is ReentrancyGuard {
             address(this)
         );
 
-        if(!IERC20(USDCAddress.actual).transfer(msg.sender, _amount)){
+        if (!IERC20(USDCAddress.actual).transfer(msg.sender, _amount)) {
             revert TransferFailed();
         }
 
@@ -267,9 +254,10 @@ contract Staking is ReentrancyGuard {
             _amount,
             address(this)
         );
-        if(!IERC20(USDCAddress.actual).transfer(triggerSwaps.actual, _amount)){
-            revert TransferFailed();
-        }
+
+        IERC20(USDCAddress.actual).approve(triggerSwaps.actual, _amount);
+
+        IERC20(USDCAddress.actual).transfer(triggerSwaps.actual, _amount);
     }
 
     //•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙•⋅∙

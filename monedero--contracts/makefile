@@ -27,7 +27,7 @@ anvil :
 
 NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 
-ETH_TESTNET_ARGS := --rpc-url $(ETH_RPC_URL) --private-key $(PRIVATE) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API) -vvvv
+ETH_TESTNET_ARGS := --rpc-url $(ETH_RPC_URL) --private-key $(PRIVATE) --broadcast --verify --etherscan-api-key $(BASESCAN_API) -vvvv
 compile:
 	forge compile
 deployTest:

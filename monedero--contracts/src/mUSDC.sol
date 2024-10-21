@@ -46,7 +46,6 @@ contract mUSDC is ERC20 {
     }
 
     RoleTypeData private stakingContract;
-    RoleTypeData private triggeredSwaps;
     RoleTypeData private administrator;
     RoleTypeData private mUSDCAddress;
     RoleTypeData private masterWallet;
@@ -58,10 +57,9 @@ contract mUSDC is ERC20 {
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     //Modifiers
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-    modifier onlyStakingOrTriggeredSwapsContract() {
+    modifier onlyStakingContract() {
         if (
-            msg.sender != stakingContract.actual ||
-            msg.sender != triggeredSwaps.actual
+            msg.sender != stakingContract.actual
         ) {
             revert Unauthorized();
         }
@@ -80,12 +78,10 @@ contract mUSDC is ERC20 {
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
     constructor(
         address _stakingContract,
-        address _administrator,
-        address _triggerSwaps
+        address _administrator
     ) ERC20("Monedero USDC", "mUSDC") {
         stakingContract.actual = _stakingContract;
         administrator.actual = _administrator;
-        triggeredSwaps.actual = _triggerSwaps;
     }
 
     //▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
@@ -107,7 +103,7 @@ contract mUSDC is ERC20 {
         address to,
         uint256 amount,
         uint256 newAPY
-    ) external onlyStakingOrTriggeredSwapsContract {
+    ) external onlyStakingContract {
         _hookUpdateYield(to);
 
         _mint(to, amount);
@@ -130,7 +126,7 @@ contract mUSDC is ERC20 {
         address from,
         uint256 amount,
         uint256 newAPY
-    ) external onlyStakingOrTriggeredSwapsContract {
+    ) external onlyStakingContract{
         _hookUpdateYield(from);
 
         _burn(from, amount);
@@ -223,31 +219,6 @@ contract mUSDC is ERC20 {
         ) {
             administrator = RoleTypeData({
                 actual: administrator.proposed,
-                proposed: address(0),
-                timeToClaim: 0
-            });
-        }
-    }
-
-    function proposeNewTriggeredSwapsAddress(
-        address _newAddress
-    ) external onlyAdministrator {
-        triggeredSwaps.proposed = _newAddress;
-        triggeredSwaps.timeToClaim = block.timestamp + 1 days;
-    }
-
-    function cancelNewTriggeredSwapsAddress() external onlyAdministrator {
-        triggeredSwaps.proposed = address(0);
-        triggeredSwaps.timeToClaim = 0;
-    }
-
-    function claimNewTriggeredSwapsAddress() external {
-        if (
-            block.timestamp > triggeredSwaps.timeToClaim &&
-            msg.sender == triggeredSwaps.proposed
-        ) {
-            triggeredSwaps = RoleTypeData({
-                actual: triggeredSwaps.proposed,
                 proposed: address(0),
                 timeToClaim: 0
             });
