@@ -1,0 +1,930 @@
+ ____                       _ _                                        _    
+/ ___|  ___  ___ _   _ _ __(_) |_ _   _      _ __ ___ _ __   ___  _ __| |_  
+\___ \ / _ \/ __| | | | '__| | __| | | |    | '__/ _ \ '_ \ / _ \| '__| __| 
+ ___) |  __/ (__| |_| | |  | | |_| |_| |    | | |  __/ |_) | (_) | |  | |_  
+|____/ \___|\___|\__,_|_|  |_|\__|\__, |    |_|  \___| .__/ \___/|_|   \__| 
+__      ____ _| | _____           |___/              |_|                    
+\ \ /\ / / _` | |/ / _ \                                                    
+ \ V  V / (_| |   <  __/                                                    
+  \_/\_/ \__,_|_|\_\___|
+
+■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ───────────────────────╮
+│   115             _USDCAddress                                                           │
+│   116         );                                                                         │
+│   117         //se infinite allowance a aavePool and triggerSwaps                        │
+│ ❱ 118         if (!IERC20(_USDCAddress).approve(_aavePool, type(uint256).max)){          │
+│   119             revert ApproveFailed();                                                │
+│   120         }                                                                          │
+│   121         if(!IERC20(_USDCAddress).approve(triggerSwaps.actual, type(uint256).max)){ │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ───────────────────────╮
+│   118         if (!IERC20(_USDCAddress).approve(_aavePool, type(uint256).max)){          │
+│   119             revert ApproveFailed();                                                │
+│   120         }                                                                          │
+│ ❱ 121         if(!IERC20(_USDCAddress).approve(triggerSwaps.actual, type(uint256).max)){ │
+│   122             revert ApproveFailed();                                                │
+│   123         }                                                                          │
+│   124         masterWallet.actual = _masterWallet;                                       │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ─╮
+│   146         }                                                    │
+│   147         // staking logic                                     │
+│   148         if (                                                 │
+│ ❱ 149             !IERC20(USDCAddress.actual).transferFrom(        │
+│   150                 msg.sender,                                  │
+│   151                 address(this),                               │
+│   152                 _amount                                      │
+╰─ src/Staking.sol ──────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ───────────╮
+│   187             address(this)                                              │
+│   188         );                                                             │
+│   189                                                                        │
+│ ❱ 190         if(!IERC20(USDCAddress.actual).transfer(msg.sender, _amount)){ │
+│   191             revert TransferFailed();                                   │
+│   192         }                                                              │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ──────────╮
+│   243                 address(this)                                         │
+│   244             );                                                        │
+│   245                                                                       │
+│ ❱ 246             if (!IERC20(USDCAddress.actual).transfer(user, amount)) { │
+│   247                 revert TransferFailed();                              │
+│   248             }                                                         │
+╰─ src/Staking.sol ───────────────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ────────────────────╮
+│   267             _amount,                                                            │
+│   268             address(this)                                                       │
+│   269         );                                                                      │
+│ ❱ 270         if(!IERC20(USDCAddress.actual).transfer(triggerSwaps.actual, _amount)){ │
+│   271             revert TransferFailed();                                            │
+│   272         }                                                                       │
+│   273     }                                                                           │
+╰─ src/Staking.sol ─────────────────────────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ─────────╮
+│   367             revert Unauthorized();                                   │
+│   368         }                                                            │
+│   369                                                                      │
+│ ❱ 370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│   371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│   372         IERC20(mUSDCAddress.actual).approve(                         │
+│   373             mUSDCAddress.proposed,                                   │
+╰─ src/Staking.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ─────────╮
+│   368         }                                                            │
+│   369                                                                      │
+│   370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│ ❱ 371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│   372         IERC20(mUSDCAddress.actual).approve(                         │
+│   373             mUSDCAddress.proposed,                                   │
+│   374             type(uint256).max                                        │
+╰─ src/Staking.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ─────────╮
+│   369                                                                      │
+│   370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│   371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│ ❱ 372         IERC20(mUSDCAddress.actual).approve(                         │
+│   373             mUSDCAddress.proposed,                                   │
+│   374             type(uint256).max                                        │
+│   375         );                                                           │
+╰─ src/Staking.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ─╮
+│   373             mUSDCAddress.proposed,                           │
+│   374             type(uint256).max                                │
+│   375         );                                                   │
+│ ❱ 376         IERC20(mUSDCAddress.actual).approve(                 │
+│   377             mUSDCAddress.proposed,                           │
+│   378             type(uint256).max                                │
+│   379         );                                                   │
+╰─ src/Staking.sol ──────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ─────────────────────╮
+│   150                                                                                  │
+│   151         Staking(StakingAddress.actual).stakingUSDC(10000);                       │
+│   152                                                                                  │
+│ ❱ 153         if (!IERC20(mUSDCAddress.actual).transfer(masterWallet.actual, 10000)) { │
+│   154             revert TransferFailed();                                             │
+│   155         }                                                                        │
+╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────────╯
+
+
+╭─ [MEDIUM][HIGH] Unsafe variant of ERC-20 call [unsafe-erc20-call] ──────╮
+│   440             orders[orderID].targetPrice                           │
+│   441         );                                                        │
+│   442                                                                   │
+│ ❱ 443         if(!IERC20(orders[orderID].tokenAddress_target).transfer( │
+│   444             orders[orderID].userAddress,                          │
+│   445             amountIn                                              │
+│   446         )) {                                                      │
+╰─ src/TriggeredSwaps.sol ────────────────────────────────────────────────╯
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+ For this issue, the following paths were found:
+  - src/Staking.sol
+  - src/TriggeredSwaps.sol
+ We decided to left the contract invocation as it is, because
+ mUsdc and USDC has boolean return values.
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□
+
+╭─ [HIGH][LOW] Possible reentrancy in `TransferHelper.safeTransferFrom(address,address,address,uint256)` [reentrancy] ─╮
+│   17         uint256 value                                                                                           │
+│   18     ) internal {                                                                                                │
+│   19         (bool success, bytes memory data) =                                                                     │
+│ ❱ 20             token.call(abi.encodeWithSelector(IERC20.transferFrom.selector, from, to, value));                  │
+│   21         require(success && (data.length == 0 || abi.decode(data, (bool))), 'STF');                              │
+│   22     }                                                                                                           │
+╰─ lib/v3-periphery/contracts/libraries/TransferHelper.sol ────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.triggerOrder(uint256[])` ───────────────────────────╮
+│   │   175      */                                                                         │
+│   │   176     function triggerOrder(uint256[] calldata _orderIDs) external nonReentrant { │
+│   │   177         for (uint256 i = 0; i < _orderIDs.length; i++) {                        │
+│   │ ❱ 178             _makeTriggerOrder(_orderIDs[i]);                                    │
+│   │   179         }                                                                       │
+│   │   180     }                                                                           │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `TriggeredSwaps.flushTrigger()` ────────────────────────────────╮
+    │   186         bool flagOrderActiveDecided = false;                                │
+    │   187         // comienza desde el primer orderID positivo (firstPositiveOrderID) │
+    │   188         for (uint256 i = firstPositiveOrderID; i < orders.length; i++) {    │
+    │ ❱ 189             _makeTriggerOrder(i);                                           │
+    │   190             //aprovecha y busca el siguiente orderID positivo               │
+    │   191             if (orders[i].isActive && !flagOrderActiveDecided) {            │
+    │   192                 firstPositiveOrderID = i;                                   │
+    ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `TransferHelper.safeTransfer(address,address,uint256)` [reentrancy] ──────────────────╮
+│   31         address to,                                                                                                  │
+│   32         uint256 value                                                                                                │
+│   33     ) internal {                                                                                                     │
+│ ❱ 34         (bool success, bytes memory data) = token.call(abi.encodeWithSelector(IERC20.transfer.selector, to, value)); │
+│   35         require(success && (data.length == 0 || abi.decode(data, (bool))), 'ST');                                    │
+│   36     }                                                                                                                │
+╰─ lib/v3-periphery/contracts/libraries/TransferHelper.sol ─────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.triggerOrder(uint256[])` ───────────────────────────╮
+│   │   175      */                                                                         │
+│   │   176     function triggerOrder(uint256[] calldata _orderIDs) external nonReentrant { │
+│   │   177         for (uint256 i = 0; i < _orderIDs.length; i++) {                        │
+│   │ ❱ 178             _makeTriggerOrder(_orderIDs[i]);                                    │
+│   │   179         }                                                                       │
+│   │   180     }                                                                           │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `TriggeredSwaps.flushTrigger()` ────────────────────────────────╮
+    │   186         bool flagOrderActiveDecided = false;                                │
+    │   187         // comienza desde el primer orderID positivo (firstPositiveOrderID) │
+    │   188         for (uint256 i = firstPositiveOrderID; i < orders.length; i++) {    │
+    │ ❱ 189             _makeTriggerOrder(i);                                           │
+    │   190             //aprovecha y busca el siguiente orderID positivo               │
+    │   191             if (orders[i].isActive && !flagOrderActiveDecided) {            │
+    │   192                 firstPositiveOrderID = i;                                   │
+    ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `TransferHelper.safeApprove(address,address,uint256)` [reentrancy] ──────────────────╮
+│   45         address to,                                                                                                 │
+│   46         uint256 value                                                                                               │
+│   47     ) internal {                                                                                                    │
+│ ❱ 48         (bool success, bytes memory data) = token.call(abi.encodeWithSelector(IERC20.approve.selector, to, value)); │
+│   49         require(success && (data.length == 0 || abi.decode(data, (bool))), 'SA');                                   │
+│   50     }                                                                                                               │
+╰─ lib/v3-periphery/contracts/libraries/TransferHelper.sol ────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.triggerOrder(uint256[])` ───────────────────────────╮
+│   │   175      */                                                                         │
+│   │   176     function triggerOrder(uint256[] calldata _orderIDs) external nonReentrant { │
+│   │   177         for (uint256 i = 0; i < _orderIDs.length; i++) {                        │
+│   │ ❱ 178             _makeTriggerOrder(_orderIDs[i]);                                    │
+│   │   179         }                                                                       │
+│   │   180     }                                                                           │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `TriggeredSwaps.flushTrigger()` ────────────────────────────────╮
+    │   186         bool flagOrderActiveDecided = false;                                │
+    │   187         // comienza desde el primer orderID positivo (firstPositiveOrderID) │
+    │   188         for (uint256 i = firstPositiveOrderID; i < orders.length; i++) {    │
+    │ ❱ 189             _makeTriggerOrder(i);                                           │
+    │   190             //aprovecha y busca el siguiente orderID positivo               │
+    │   191             if (orders[i].isActive && !flagOrderActiveDecided) {            │
+    │   192                 firstPositiveOrderID = i;                                   │
+    ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.stakingUSDC(uint256)` [reentrancy] ─╮
+│   146         }                                                                  │
+│   147         // staking logic                                                   │
+│   148         if (                                                               │
+│ ❱ 149             !IERC20(USDCAddress.actual).transferFrom(                      │
+│   150                 msg.sender,                                                │
+│   151                 address(this),                                             │
+│   152                 _amount                                                    │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` ─────╮
+│   │   148             })                                                                   │
+│   │   149         );                                                                       │
+│   │   150                                                                                  │
+│   │ ❱ 151         Staking(StakingAddress.actual).stakingUSDC(10000);                       │
+│   │   152                                                                                  │
+│   │   153         if (!IERC20(mUSDCAddress.actual).transfer(masterWallet.actual, 10000)) { │
+│   │   154             revert TransferFailed();                                             │
+│   ╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.stakingUSDC(uint256)` ───────────╮
+    │   145             revert NotEnoughAllowance();              │
+    │   146         }                                             │
+    │   147         // staking logic                              │
+    │ ❱ 148         if (                                          │
+    │   149             !IERC20(USDCAddress.actual).transferFrom( │
+    │   150                 msg.sender,                           │
+    │   151                 address(this),                        │
+    ╰─ src/Staking.sol ───────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.stakingUSDC(uint256)` [reentrancy] ─╮
+│   155             revert TransferFailed();                                       │
+│   156         }                                                                  │
+│   157                                                                            │
+│ ❱ 158         Pool(aavePool.actual).supply(                                      │
+│   159             USDCAddress.actual,                                            │
+│   160             _amount,                                                       │
+│   161             address(this),                                                 │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` ─────╮
+│   │   148             })                                                                   │
+│   │   149         );                                                                       │
+│   │   150                                                                                  │
+│   │ ❱ 151         Staking(StakingAddress.actual).stakingUSDC(10000);                       │
+│   │   152                                                                                  │
+│   │   153         if (!IERC20(mUSDCAddress.actual).transfer(masterWallet.actual, 10000)) { │
+│   │   154             revert TransferFailed();                                             │
+│   ╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.stakingUSDC(uint256)` ─╮
+    │   155             revert TransferFailed();        │
+    │   156         }                                   │
+    │   157                                             │
+    │ ❱ 158         Pool(aavePool.actual).supply(       │
+    │   159             USDCAddress.actual,             │
+    │   160             _amount,                        │
+    │   161             address(this),                  │
+    ╰─ src/Staking.sol ─────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.stakingUSDC(uint256)` [reentrancy] ─╮
+│   162             0                                                              │
+│   163         );                                                                 │
+│   164                                                                            │
+│ ❱ 165         mUSDC(mUSDCAddress.actual).mint(msg.sender, _amount, apy.actual);  │
+│   166                                                                            │
+│   167         return true;                                                       │
+│   168     }                                                                      │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` ─────╮
+    │   148             })                                                                   │
+    │   149         );                                                                       │
+    │   150                                                                                  │
+    │ ❱ 151         Staking(StakingAddress.actual).stakingUSDC(10000);                       │
+    │   152                                                                                  │
+    │   153         if (!IERC20(mUSDCAddress.actual).transfer(masterWallet.actual, 10000)) { │
+    │   154             revert TransferFailed();                                             │
+    ╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.unstakingNowUSDC(uint256)` [reentrancy] ─╮
+│   179         if (mUSDC(mUSDCAddress.actual).balanceOf(msg.sender) < _amount) {       │
+│   180             revert NotEnoughBalance();                                          │
+│   181         }                                                                       │
+│ ❱ 182         mUSDC(mUSDCAddress.actual).burn(msg.sender, _amount, apy.actual);       │
+│   183                                                                                 │
+│   184         Pool(aavePool.actual).withdraw(                                         │
+│   185             USDCAddress.actual,                                                 │
+╰─ src/Staking.sol ─────────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.unstakingNowUSDC(uint256)` ──────────────────────────╮
+    │   179         if (mUSDC(mUSDCAddress.actual).balanceOf(msg.sender) < _amount) { │
+    │   180             revert NotEnoughBalance();                                    │
+    │   181         }                                                                 │
+    │ ❱ 182         mUSDC(mUSDCAddress.actual).burn(msg.sender, _amount, apy.actual); │
+    │   183                                                                           │
+    │   184         Pool(aavePool.actual).withdraw(                                   │
+    │   185             USDCAddress.actual,                                           │
+    ╰─ src/Staking.sol ───────────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.unstakingNowUSDC(uint256)` [reentrancy] ─╮
+│   181         }                                                                       │
+│   182         mUSDC(mUSDCAddress.actual).burn(msg.sender, _amount, apy.actual);       │
+│   183                                                                                 │
+│ ❱ 184         Pool(aavePool.actual).withdraw(                                         │
+│   185             USDCAddress.actual,                                                 │
+│   186             _amount,                                                            │
+│   187             address(this)                                                       │
+╰─ src/Staking.sol ─────────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.unstakingNowUSDC(uint256)` ──────────────────────────╮
+    │   181         }                                                                 │
+    │   182         mUSDC(mUSDCAddress.actual).burn(msg.sender, _amount, apy.actual); │
+    │   183                                                                           │
+    │ ❱ 184         Pool(aavePool.actual).withdraw(                                   │
+    │   185             USDCAddress.actual,                                           │
+    │   186             _amount,                                                      │
+    │   187             address(this)                                                 │
+    ╰─ src/Staking.sol ───────────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.processUnstaking24Hours()` [reentrancy] ─╮
+│   235             address user = listPendingUnstaking24Hours[i];                      │
+│   236             uint256 amount = pendingUnstaking24Hours[user];                     │
+│   237                                                                                 │
+│ ❱ 238             mUSDC(mUSDCAddress.actual).burn(user, amount, apy.actual);          │
+│   239                                                                                 │
+│   240             Pool(aavePool.actual).withdraw(                                     │
+│   241                 USDCAddress.actual,                                             │
+╰─ src/Staking.sol ─────────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.processUnstaking24Hours()` ───────────────────────╮
+    │   235             address user = listPendingUnstaking24Hours[i];             │
+    │   236             uint256 amount = pendingUnstaking24Hours[user];            │
+    │   237                                                                        │
+    │ ❱ 238             mUSDC(mUSDCAddress.actual).burn(user, amount, apy.actual); │
+    │   239                                                                        │
+    │   240             Pool(aavePool.actual).withdraw(                            │
+    │   241                 USDCAddress.actual,                                    │
+    ╰─ src/Staking.sol ────────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.processUnstaking24Hours()` [reentrancy] ─╮
+│   237                                                                                 │
+│   238             mUSDC(mUSDCAddress.actual).burn(user, amount, apy.actual);          │
+│   239                                                                                 │
+│ ❱ 240             Pool(aavePool.actual).withdraw(                                     │
+│   241                 USDCAddress.actual,                                             │
+│   242                 amount,                                                         │
+│   243                 address(this)                                                   │
+╰─ src/Staking.sol ─────────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.processUnstaking24Hours()` ───────────────────────╮
+    │   237                                                                        │
+    │   238             mUSDC(mUSDCAddress.actual).burn(user, amount, apy.actual); │
+    │   239                                                                        │
+    │ ❱ 240             Pool(aavePool.actual).withdraw(                            │
+    │   241                 USDCAddress.actual,                                    │
+    │   242                 amount,                                                │
+    │   243                 address(this)                                          │
+    ╰─ src/Staking.sol ────────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.processUnstaking24Hours()` [reentrancy] ─╮
+│   243                 address(this)                                                   │
+│   244             );                                                                  │
+│   245                                                                                 │
+│ ❱ 246             if (!IERC20(USDCAddress.actual).transfer(user, amount)) {           │
+│   247                 revert TransferFailed();                                        │
+│   248             }                                                                   │
+╰─ src/Staking.sol ─────────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.processUnstaking24Hours()` ──────────────────────╮
+    │   243                 address(this)                                         │
+    │   244             );                                                        │
+    │   245                                                                       │
+    │ ❱ 246             if (!IERC20(USDCAddress.actual).transfer(user, amount)) { │
+    │   247                 revert TransferFailed();                              │
+    │   248             }                                                         │
+    ╰─ src/Staking.sol ───────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.burnAndTransferToTriggerSwaps(address,uint256)` [reentrancy] ─╮
+│   261         address _user,                                                                               │
+│   262         uint256 _amount                                                                              │
+│   263     ) external onlyTriggerSwaps nonReentrant {                                                       │
+│ ❱ 264         mUSDC(mUSDCAddress.actual).burn(_user, _amount, apy.actual);                                 │
+│   265         Pool(aavePool.actual).withdraw(                                                              │
+│   266             USDCAddress.actual,                                                                      │
+│   267             _amount,                                                                                 │
+╰─ src/Staking.sol ──────────────────────────────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` ─╮
+│   │   132             revert UserHasNotEnoughmUSDC();                                  │
+│   │   133         }                                                                    │
+│   │   134                                                                              │
+│   │ ❱ 135         Staking(StakingAddress.actual).burnAndTransferToTriggerSwaps(        │
+│   │   136             msg.sender,                                                      │
+│   │   137             10000                                                            │
+│   │   138         );                                                                   │
+│   ╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.triggerOrder(uint256[])` ───────────────────────────╮
+│   │   175      */                                                                         │
+│   │   176     function triggerOrder(uint256[] calldata _orderIDs) external nonReentrant { │
+│   │   177         for (uint256 i = 0; i < _orderIDs.length; i++) {                        │
+│   │ ❱ 178             _makeTriggerOrder(_orderIDs[i]);                                    │
+│   │   179         }                                                                       │
+│   │   180     }                                                                           │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.flushTrigger()` ────────────────────────────────╮
+│   │   186         bool flagOrderActiveDecided = false;                                │
+│   │   187         // comienza desde el primer orderID positivo (firstPositiveOrderID) │
+│   │   188         for (uint256 i = firstPositiveOrderID; i < orders.length; i++) {    │
+│   │ ❱ 189             _makeTriggerOrder(i);                                           │
+│   │   190             //aprovecha y busca el siguiente orderID positivo               │
+│   │   191             if (orders[i].isActive && !flagOrderActiveDecided) {            │
+│   │   192                 firstPositiveOrderID = i;                                   │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.burnAndTransferToTriggerSwaps(address,uint256)` ─╮
+    │   261         address _user,                                                │
+    │   262         uint256 _amount                                               │
+    │   263     ) external onlyTriggerSwaps nonReentrant {                        │
+    │ ❱ 264         mUSDC(mUSDCAddress.actual).burn(_user, _amount, apy.actual);  │
+    │   265         Pool(aavePool.actual).withdraw(                               │
+    │   266             USDCAddress.actual,                                       │
+    │   267             _amount,                                                  │
+    ╰─ src/Staking.sol ───────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.burnAndTransferToTriggerSwaps(address,uint256)` [reentrancy] ─╮
+│   262         uint256 _amount                                                                              │
+│   263     ) external onlyTriggerSwaps nonReentrant {                                                       │
+│   264         mUSDC(mUSDCAddress.actual).burn(_user, _amount, apy.actual);                                 │
+│ ❱ 265         Pool(aavePool.actual).withdraw(                                                              │
+│   266             USDCAddress.actual,                                                                      │
+│   267             _amount,                                                                                 │
+│   268             address(this)                                                                            │
+╰─ src/Staking.sol ──────────────────────────────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` ─╮
+│   │   132             revert UserHasNotEnoughmUSDC();                                  │
+│   │   133         }                                                                    │
+│   │   134                                                                              │
+│   │ ❱ 135         Staking(StakingAddress.actual).burnAndTransferToTriggerSwaps(        │
+│   │   136             msg.sender,                                                      │
+│   │   137             10000                                                            │
+│   │   138         );                                                                   │
+│   ╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.triggerOrder(uint256[])` ───────────────────────────╮
+│   │   175      */                                                                         │
+│   │   176     function triggerOrder(uint256[] calldata _orderIDs) external nonReentrant { │
+│   │   177         for (uint256 i = 0; i < _orderIDs.length; i++) {                        │
+│   │ ❱ 178             _makeTriggerOrder(_orderIDs[i]);                                    │
+│   │   179         }                                                                       │
+│   │   180     }                                                                           │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.flushTrigger()` ────────────────────────────────╮
+│   │   186         bool flagOrderActiveDecided = false;                                │
+│   │   187         // comienza desde el primer orderID positivo (firstPositiveOrderID) │
+│   │   188         for (uint256 i = firstPositiveOrderID; i < orders.length; i++) {    │
+│   │ ❱ 189             _makeTriggerOrder(i);                                           │
+│   │   190             //aprovecha y busca el siguiente orderID positivo               │
+│   │   191             if (orders[i].isActive && !flagOrderActiveDecided) {            │
+│   │   192                 firstPositiveOrderID = i;                                   │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.burnAndTransferToTriggerSwaps(address,uint256)` ─╮
+    │   262         uint256 _amount                                               │
+    │   263     ) external onlyTriggerSwaps nonReentrant {                        │
+    │   264         mUSDC(mUSDCAddress.actual).burn(_user, _amount, apy.actual);  │
+    │ ❱ 265         Pool(aavePool.actual).withdraw(                               │
+    │   266             USDCAddress.actual,                                       │
+    │   267             _amount,                                                  │
+    │   268             address(this)                                             │
+    ╰─ src/Staking.sol ───────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.burnAndTransferToTriggerSwaps(address,uint256)` [reentrancy] ─╮
+│   267             _amount,                                                                                 │
+│   268             address(this)                                                                            │
+│   269         );                                                                                           │
+│ ❱ 270         if(!IERC20(USDCAddress.actual).transfer(triggerSwaps.actual, _amount)){                      │
+│   271             revert TransferFailed();                                                                 │
+│   272         }                                                                                            │
+│   273     }                                                                                                │
+╰─ src/Staking.sol ──────────────────────────────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` ─╮
+│   │   132             revert UserHasNotEnoughmUSDC();                                  │
+│   │   133         }                                                                    │
+│   │   134                                                                              │
+│   │ ❱ 135         Staking(StakingAddress.actual).burnAndTransferToTriggerSwaps(        │
+│   │   136             msg.sender,                                                      │
+│   │   137             10000                                                            │
+│   │   138         );                                                                   │
+│   ╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.triggerOrder(uint256[])` ───────────────────────────╮
+│   │   175      */                                                                         │
+│   │   176     function triggerOrder(uint256[] calldata _orderIDs) external nonReentrant { │
+│   │   177         for (uint256 i = 0; i < _orderIDs.length; i++) {                        │
+│   │ ❱ 178             _makeTriggerOrder(_orderIDs[i]);                                    │
+│   │   179         }                                                                       │
+│   │   180     }                                                                           │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `TriggeredSwaps.flushTrigger()` ────────────────────────────────╮
+    │   186         bool flagOrderActiveDecided = false;                                │
+    │   187         // comienza desde el primer orderID positivo (firstPositiveOrderID) │
+    │   188         for (uint256 i = firstPositiveOrderID; i < orders.length; i++) {    │
+    │ ❱ 189             _makeTriggerOrder(i);                                           │
+    │   190             //aprovecha y busca el siguiente orderID positivo               │
+    │   191             if (orders[i].isActive && !flagOrderActiveDecided) {            │
+    │   192                 firstPositiveOrderID = i;                                   │
+    ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.claim_mUSDCAddress()` [reentrancy] ─╮
+│   367             revert Unauthorized();                                         │
+│   368         }                                                                  │
+│   369                                                                            │
+│ ❱ 370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0);       │
+│   371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0);       │
+│   372         IERC20(mUSDCAddress.actual).approve(                               │
+│   373             mUSDCAddress.proposed,                                         │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.claim_mUSDCAddress()` ──────────────────────────╮
+    │   367             revert Unauthorized();                                   │
+    │   368         }                                                            │
+    │   369                                                                      │
+    │ ❱ 370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+    │   371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+    │   372         IERC20(mUSDCAddress.actual).approve(                         │
+    │   373             mUSDCAddress.proposed,                                   │
+    ╰─ src/Staking.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.claim_mUSDCAddress()` [reentrancy] ─╮
+│   368         }                                                                  │
+│   369                                                                            │
+│   370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0);       │
+│ ❱ 371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0);       │
+│   372         IERC20(mUSDCAddress.actual).approve(                               │
+│   373             mUSDCAddress.proposed,                                         │
+│   374             type(uint256).max                                              │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.claim_mUSDCAddress()` ──────────────────────────╮
+    │   368         }                                                            │
+    │   369                                                                      │
+    │   370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+    │ ❱ 371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+    │   372         IERC20(mUSDCAddress.actual).approve(                         │
+    │   373             mUSDCAddress.proposed,                                   │
+    │   374             type(uint256).max                                        │
+    ╰─ src/Staking.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.claim_mUSDCAddress()` [reentrancy] ─╮
+│   369                                                                            │
+│   370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0);       │
+│   371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0);       │
+│ ❱ 372         IERC20(mUSDCAddress.actual).approve(                               │
+│   373             mUSDCAddress.proposed,                                         │
+│   374             type(uint256).max                                              │
+│   375         );                                                                 │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.claim_mUSDCAddress()` ──────────────────────────╮
+    │   369                                                                      │
+    │   370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+    │   371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+    │ ❱ 372         IERC20(mUSDCAddress.actual).approve(                         │
+    │   373             mUSDCAddress.proposed,                                   │
+    │   374             type(uint256).max                                        │
+    │   375         );                                                           │
+    ╰─ src/Staking.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `Staking.claim_mUSDCAddress()` [reentrancy] ─╮
+│   373             mUSDCAddress.proposed,                                         │
+│   374             type(uint256).max                                              │
+│   375         );                                                                 │
+│ ❱ 376         IERC20(mUSDCAddress.actual).approve(                               │
+│   377             mUSDCAddress.proposed,                                         │
+│   378             type(uint256).max                                              │
+│   379         );                                                                 │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.claim_mUSDCAddress()` ──╮
+    │   373             mUSDCAddress.proposed,           │
+    │   374             type(uint256).max                │
+    │   375         );                                   │
+    │ ❱ 376         IERC20(mUSDCAddress.actual).approve( │
+    │   377             mUSDCAddress.proposed,           │
+    │   378             type(uint256).max                │
+    │   379         );                                   │
+    ╰─ src/Staking.sol ──────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` [reentrancy] ─╮
+│   132             revert UserHasNotEnoughmUSDC();                                                                 │
+│   133         }                                                                                                   │
+│   134                                                                                                             │
+│ ❱ 135         Staking(StakingAddress.actual).burnAndTransferToTriggerSwaps(                                       │
+│   136             msg.sender,                                                                                     │
+│   137             10000                                                                                           │
+│   138         );                                                                                                  │
+╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` ─╮
+    │   132             revert UserHasNotEnoughmUSDC();                                  │
+    │   133         }                                                                    │
+    │   134                                                                              │
+    │ ❱ 135         Staking(StakingAddress.actual).burnAndTransferToTriggerSwaps(        │
+    │   136             msg.sender,                                                      │
+    │   137             10000                                                            │
+    │   138         );                                                                   │
+    ╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` [reentrancy] ─╮
+│   148             })                                                                                              │
+│   149         );                                                                                                  │
+│   150                                                                                                             │
+│ ❱ 151         Staking(StakingAddress.actual).stakingUSDC(10000);                                                  │
+│   152                                                                                                             │
+│   153         if (!IERC20(mUSDCAddress.actual).transfer(masterWallet.actual, 10000)) {                            │
+│   154             revert TransferFailed();                                                                        │
+╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` ─────╮
+    │   148             })                                                                   │
+    │   149         );                                                                       │
+    │   150                                                                                  │
+    │ ❱ 151         Staking(StakingAddress.actual).stakingUSDC(10000);                       │
+    │   152                                                                                  │
+    │   153         if (!IERC20(mUSDCAddress.actual).transfer(masterWallet.actual, 10000)) { │
+    │   154             revert TransferFailed();                                             │
+    ╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `TriggeredSwaps._makeTriggerOrder(uint256)` [reentrancy] ─╮
+│   428             return;                                                                     │
+│   429         }                                                                               │
+│   430                                                                                         │
+│ ❱ 431         Staking(StakingAddress.actual).burnAndTransferToTriggerSwaps(                   │
+│   432             orders[orderID].userAddress,                                                │
+│   433             orders[orderID].mUSDCAmount                                                 │
+│   434         );                                                                              │
+╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.triggerOrder(uint256[])` ───────────────────────────╮
+│   │   175      */                                                                         │
+│   │   176     function triggerOrder(uint256[] calldata _orderIDs) external nonReentrant { │
+│   │   177         for (uint256 i = 0; i < _orderIDs.length; i++) {                        │
+│   │ ❱ 178             _makeTriggerOrder(_orderIDs[i]);                                    │
+│   │   179         }                                                                       │
+│   │   180     }                                                                           │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `TriggeredSwaps.flushTrigger()` ────────────────────────────────╮
+    │   186         bool flagOrderActiveDecided = false;                                │
+    │   187         // comienza desde el primer orderID positivo (firstPositiveOrderID) │
+    │   188         for (uint256 i = firstPositiveOrderID; i < orders.length; i++) {    │
+    │ ❱ 189             _makeTriggerOrder(i);                                           │
+    │   190             //aprovecha y busca el siguiente orderID positivo               │
+    │   191             if (orders[i].isActive && !flagOrderActiveDecided) {            │
+    │   192                 firstPositiveOrderID = i;                                   │
+    ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `TriggeredSwaps._makeTriggerOrder(uint256)` [reentrancy] ─╮
+│   440             orders[orderID].targetPrice                                                 │
+│   441         );                                                                              │
+│   442                                                                                         │
+│ ❱ 443         if(!IERC20(orders[orderID].tokenAddress_target).transfer(                       │
+│   444             orders[orderID].userAddress,                                                │
+│   445             amountIn                                                                    │
+│   446         )) {                                                                            │
+╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.triggerOrder(uint256[])` ───────────────────────────╮
+│   │   175      */                                                                         │
+│   │   176     function triggerOrder(uint256[] calldata _orderIDs) external nonReentrant { │
+│   │   177         for (uint256 i = 0; i < _orderIDs.length; i++) {                        │
+│   │ ❱ 178             _makeTriggerOrder(_orderIDs[i]);                                    │
+│   │   179         }                                                                       │
+│   │   180     }                                                                           │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `TriggeredSwaps.flushTrigger()` ────────────────────────────────╮
+    │   186         bool flagOrderActiveDecided = false;                                │
+    │   187         // comienza desde el primer orderID positivo (firstPositiveOrderID) │
+    │   188         for (uint256 i = firstPositiveOrderID; i < orders.length; i++) {    │
+    │ ❱ 189             _makeTriggerOrder(i);                                           │
+    │   190             //aprovecha y busca el siguiente orderID positivo               │
+    │   191             if (orders[i].isActive && !flagOrderActiveDecided) {            │
+    │   192                 firstPositiveOrderID = i;                                   │
+    ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [HIGH][LOW] Possible reentrancy in `TriggeredSwaps.swapExactOutputSingle(address,address,uint256,uint256)` [reentrancy] ─╮
+│   485             });                                                                                                     │
+│   486                                                                                                                     │
+│   487         // Executes the swap returning the amountIn needed to spend to receive the desired amountOut.               │
+│ ❱ 488         amountIn = ISwapRouter(swapRouterAddress.actual).exactOutputSingle(                                         │
+│   489             params                                                                                                  │
+│   490         );                                                                                                          │
+╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.triggerOrder(uint256[])` ───────────────────────────╮
+│   │   175      */                                                                         │
+│   │   176     function triggerOrder(uint256[] calldata _orderIDs) external nonReentrant { │
+│   │   177         for (uint256 i = 0; i < _orderIDs.length; i++) {                        │
+│   │ ❱ 178             _makeTriggerOrder(_orderIDs[i]);                                    │
+│   │   179         }                                                                       │
+│   │   180     }                                                                           │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `TriggeredSwaps.flushTrigger()` ────────────────────────────────╮
+    │   186         bool flagOrderActiveDecided = false;                                │
+    │   187         // comienza desde el primer orderID positivo (firstPositiveOrderID) │
+    │   188         for (uint256 i = firstPositiveOrderID; i < orders.length; i++) {    │
+    │ ❱ 189             _makeTriggerOrder(i);                                           │
+    │   190             //aprovecha y busca el siguiente orderID positivo               │
+    │   191             if (orders[i].isActive && !flagOrderActiveDecided) {            │
+    │   192                 firstPositiveOrderID = i;                                   │
+    ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────╯
+
+╭─ [WARNING][LOW] Possible reentrancy in `SupplyLogic.executeSupply(mapping(address => struct DataTypes.ReserveData),mapping(uint256 => address),struct DataTypes.UserCon─╮
+│   66                                                                                                                                                                    │
+│   67     IERC20(params.asset).safeTransferFrom(msg.sender, reserveCache.aTokenAddress, params.amount);                                                                  │
+│   68                                                                                                                                                                    │
+│ ❱ 69     bool isFirstSupply = IAToken(reserveCache.aTokenAddress).mint(                                                                                                 │
+│   70       msg.sender,                                                                                                                                                  │
+│   71       params.onBehalfOf,                                                                                                                                           │
+│   72       params.amount,                                                                                                                                               │
+╰─ lib/aave-v3-origin/src/contracts/protocol/libraries/logic/SupplyLogic.sol ─────────────────────────────────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` ─────╮
+│   │   148             })                                                                   │
+│   │   149         );                                                                       │
+│   │   150                                                                                  │
+│   │ ❱ 151         Staking(StakingAddress.actual).stakingUSDC(10000);                       │
+│   │   152                                                                                  │
+│   │   153         if (!IERC20(mUSDCAddress.actual).transfer(masterWallet.actual, 10000)) { │
+│   │   154             revert TransferFailed();                                             │
+│   ╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.stakingUSDC(uint256)` ─╮
+    │   155             revert TransferFailed();        │
+    │   156         }                                   │
+    │   157                                             │
+    │ ❱ 158         Pool(aavePool.actual).supply(       │
+    │   159             USDCAddress.actual,             │
+    │   160             _amount,                        │
+    │   161             address(this),                  │
+    ╰─ src/Staking.sol ─────────────────────────────────╯
+
+
+╭─ [WARNING][LOW] Possible reentrancy in `SupplyLogic.executeWithdraw(mapping(address => struct DataTypes.ReserveData),mapping(uint256 => address),mapping(uint8 => struc─╮
+│   138       emit ReserveUsedAsCollateralDisabled(params.asset, msg.sender);                                                                                             │
+│   139     }                                                                                                                                                             │
+│   140                                                                                                                                                                   │
+│ ❱ 141     IAToken(reserveCache.aTokenAddress).burn(                                                                                                                     │
+│   142       msg.sender,                                                                                                                                                 │
+│   143       params.to,                                                                                                                                                  │
+│   144       amountToWithdraw,                                                                                                                                           │
+╰─ lib/aave-v3-origin/src/contracts/protocol/libraries/logic/SupplyLogic.sol ─────────────────────────────────────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.createTrigger(uint256,address,uint256,uint256)` ─╮
+│   │   132             revert UserHasNotEnoughmUSDC();                                  │
+│   │   133         }                                                                    │
+│   │   134                                                                              │
+│   │ ❱ 135         Staking(StakingAddress.actual).burnAndTransferToTriggerSwaps(        │
+│   │   136             msg.sender,                                                      │
+│   │   137             10000                                                            │
+│   │   138         );                                                                   │
+│   ╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.triggerOrder(uint256[])` ───────────────────────────╮
+│   │   175      */                                                                         │
+│   │   176     function triggerOrder(uint256[] calldata _orderIDs) external nonReentrant { │
+│   │   177         for (uint256 i = 0; i < _orderIDs.length; i++) {                        │
+│   │ ❱ 178             _makeTriggerOrder(_orderIDs[i]);                                    │
+│   │   179         }                                                                       │
+│   │   180     }                                                                           │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `TriggeredSwaps.flushTrigger()` ────────────────────────────────╮
+│   │   186         bool flagOrderActiveDecided = false;                                │
+│   │   187         // comienza desde el primer orderID positivo (firstPositiveOrderID) │
+│   │   188         for (uint256 i = firstPositiveOrderID; i < orders.length; i++) {    │
+│   │ ❱ 189             _makeTriggerOrder(i);                                           │
+│   │   190             //aprovecha y busca el siguiente orderID positivo               │
+│   │   191             if (orders[i].isActive && !flagOrderActiveDecided) {            │
+│   │   192                 firstPositiveOrderID = i;                                   │
+│   ╰─ src/TriggeredSwaps.sol ──────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `Staking.unstakingNowUSDC(uint256)` ──────────────────────────╮
+│   │   181         }                                                                 │
+│   │   182         mUSDC(mUSDCAddress.actual).burn(msg.sender, _amount, apy.actual); │
+│   │   183                                                                           │
+│   │ ❱ 184         Pool(aavePool.actual).withdraw(                                   │
+│   │   185             USDCAddress.actual,                                           │
+│   │   186             _amount,                                                      │
+│   │   187             address(this)                                                 │
+│   ╰─ src/Staking.sol ───────────────────────────────────────────────────────────────╯
+├── ╭─ Exploitable from `Staking.processUnstaking24Hours()` ───────────────────────╮
+│   │   237                                                                        │
+│   │   238             mUSDC(mUSDCAddress.actual).burn(user, amount, apy.actual); │
+│   │   239                                                                        │
+│   │ ❱ 240             Pool(aavePool.actual).withdraw(                            │
+│   │   241                 USDCAddress.actual,                                    │
+│   │   242                 amount,                                                │
+│   │   243                 address(this)                                          │
+│   ╰─ src/Staking.sol ────────────────────────────────────────────────────────────╯
+└── ╭─ Exploitable from `Staking.burnAndTransferToTriggerSwaps(address,uint256)` ─╮
+    │   262         uint256 _amount                                               │
+    │   263     ) external onlyTriggerSwaps nonReentrant {                        │
+    │   264         mUSDC(mUSDCAddress.actual).burn(_user, _amount, apy.actual);  │
+    │ ❱ 265         Pool(aavePool.actual).withdraw(                               │
+    │   266             USDCAddress.actual,                                       │
+    │   267             _amount,                                                  │
+    │   268             address(this)                                             │
+    ╰─ src/Staking.sol ───────────────────────────────────────────────────────────╯
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓    
+ For this reentrancy vulnerability, we added security
+ checkers using OpenZeppelin's ReentrancyGuard.sol contract.
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□
+
+
+╭─ [WARNING][HIGH] Unchecked return value [unchecked-return-value] ───────────────╮
+│   181         }                                                                 │
+│   182         mUSDC(mUSDCAddress.actual).burn(msg.sender, _amount, apy.actual); │
+│   183                                                                           │
+│ ❱ 184         Pool(aavePool.actual).withdraw(                                   │
+│   185             USDCAddress.actual,                                           │
+│   186             _amount,                                                      │
+│   187             address(this)                                                 │
+╰─ src/Staking.sol ───────────────────────────────────────────────────────────────╯
+
+
+╭─ [WARNING][HIGH] Unchecked return value [unchecked-return-value] ────────────╮
+│   237                                                                        │
+│   238             mUSDC(mUSDCAddress.actual).burn(user, amount, apy.actual); │
+│   239                                                                        │
+│ ❱ 240             Pool(aavePool.actual).withdraw(                            │
+│   241                 USDCAddress.actual,                                    │
+│   242                 amount,                                                │
+│   243                 address(this)                                          │
+╰─ src/Staking.sol ────────────────────────────────────────────────────────────╯
+
+
+╭─ [WARNING][HIGH] Unchecked return value [unchecked-return-value] ──────────╮
+│   262         uint256 _amount                                              │
+│   263     ) external onlyTriggerSwaps nonReentrant {                       │
+│   264         mUSDC(mUSDCAddress.actual).burn(_user, _amount, apy.actual); │
+│ ❱ 265         Pool(aavePool.actual).withdraw(                              │
+│   266             USDCAddress.actual,                                      │
+│   267             _amount,                                                 │
+│   268             address(this)                                            │
+╰─ src/Staking.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [WARNING][HIGH] Unchecked return value [unchecked-return-value] ──────────╮
+│   367             revert Unauthorized();                                   │
+│   368         }                                                            │
+│   369                                                                      │
+│ ❱ 370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│   371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│   372         IERC20(mUSDCAddress.actual).approve(                         │
+│   373             mUSDCAddress.proposed,                                   │
+╰─ src/Staking.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [WARNING][HIGH] Unchecked return value [unchecked-return-value] ──────────╮
+│   368         }                                                            │
+│   369                                                                      │
+│   370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│ ❱ 371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│   372         IERC20(mUSDCAddress.actual).approve(                         │
+│   373             mUSDCAddress.proposed,                                   │
+│   374             type(uint256).max                                        │
+╰─ src/Staking.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [WARNING][HIGH] Unchecked return value [unchecked-return-value] ──────────╮
+│   369                                                                      │
+│   370         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│   371         IERC20(mUSDCAddress.actual).approve(mUSDCAddress.actual, 0); │
+│ ❱ 372         IERC20(mUSDCAddress.actual).approve(                         │
+│   373             mUSDCAddress.proposed,                                   │
+│   374             type(uint256).max                                        │
+│   375         );                                                           │
+╰─ src/Staking.sol ──────────────────────────────────────────────────────────╯
+
+
+╭─ [WARNING][HIGH] Unchecked return value [unchecked-return-value] ─╮
+│   373             mUSDCAddress.proposed,                          │
+│   374             type(uint256).max                               │
+│   375         );                                                  │
+│ ❱ 376         IERC20(mUSDCAddress.actual).approve(                │
+│   377             mUSDCAddress.proposed,                          │
+│   378             type(uint256).max                               │
+│   379         );                                                  │
+╰─ src/Staking.sol ─────────────────────────────────────────────────╯
+
+
+╭─ [WARNING][HIGH] Unchecked return value [unchecked-return-value] ──────────────────────╮
+│   148             })                                                                   │
+│   149         );                                                                       │
+│   150                                                                                  │
+│ ❱ 151         Staking(StakingAddress.actual).stakingUSDC(10000);                       │
+│   152                                                                                  │
+│   153         if (!IERC20(mUSDCAddress.actual).transfer(masterWallet.actual, 10000)) { │
+│   154             revert TransferFailed();                                             │
+╰─ src/TriggeredSwaps.sol ───────────────────────────────────────────────────────────────╯
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓    
+ Some Unchecked return value dosen't have any 
+ security or logic issues, so we decided to keep them.
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□■□
